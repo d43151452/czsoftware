@@ -1,53 +1,104 @@
 <template>
-  <div>
-    <nuxt/>
-  </div>
+    <el-container class="main">
+        <el-header class="main-header">
+            <p class='title'>
+                欢迎使用ASWTeamwork,
+                <span>{{user_name}}</span>
+            </p> 
+            <ul class="header-opration">
+                <li>
+                    <el-dropdown>
+                        <span style='color:white'>
+                            个人中心<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item>
+                                <i class="el-icon-info"></i>
+                                个人设置
+                            </el-dropdown-item>
+                            <el-dropdown-item>
+                                <i class="el-icon-star-off"></i>
+                                项目管理
+                            </el-dropdown-item>
+                            <el-dropdown-item>
+                                <i class="el-icon-setting"></i>
+                                系统管理
+                            </el-dropdown-item>
+                            <el-dropdown-item>
+                                <i class="el-icon-question"></i>
+                                帮助文档
+                            </el-dropdown-item>
+                            <el-dropdown-item divided>
+                                <i class="el-icon-error"></i>
+                                退出
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </li>
+            </ul>
+        </el-header>
+        <nuxt />
+    </el-container>
 </template>
 
-<style>
-html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+    export default {
+        data(){
+            return {
+                user_name:'',
+            }
+        },
+        mounted(){
+            let auth = localStorage.getItem('auth');
+            if(!auth){
+                location.href = '/login';
+            }else{
+                this.user_name = localStorage.getItem('user_name');
+            }
+        }
+    }
+</script>
 
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-}
+<style lang="less">
+    .main{
+        height: 100vh;
+        .main-header{
+            background-color:#409EFF;
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
+            .title{
+                color: #fff;
+                display: inline-block;
+                vertical-align: middle;
+                padding: 0 10px;
+                margin: 0 10px;
+                line-height: 60px;
+                font-size: 16px;
+                cursor: pointer;
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
+                span{
+                    font-weight: 600;
+                    color:#fff;
+                }
+            }
+            .header-opration{
+                display: inline-block;
+                float: right;
+                padding-right: 30px;
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
+                li{
+                    color: #fff;
+                    display: inline-block;
+                    vertical-align: middle;
+                    padding: 0 10px;
+                    margin: 0 10px;
+                    line-height: 60px;
+                    cursor: pointer;
 
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
+                    a{
+                        color: #606266 !important; 
+                    }
+                }
+            }
+        }
+    }
 </style>
-

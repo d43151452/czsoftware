@@ -3,7 +3,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'nuxt',
+    title: '传智软件',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -13,6 +13,10 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  css: [
+    'element-ui/lib/theme-chalk/index.css',
+    '~/static/style/reset.css'
+  ],
   /*
   ** Customize the progress bar color
   */
@@ -33,7 +37,12 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
-  }
+    },
+    vendor:['axios','mockjs']
+  },
+  plugins: [
+    { src: '~/plugins/api', ssr: true },
+    { src: '~/plugins/element-ui', ssr: true}
+  ]
 }
 
