@@ -14,17 +14,20 @@ use App\Models\Operation;
 class UserController extends Controller
 {   
     // 注册
+    // 1 name：用户名
+    // 2 email: 邮箱地址
+    // 3 password: 密码
     function register(Request $request)
     {
         // 校验 字段
         if($errors = User::validator($request->all()))
-            return $errors;
+            return self::rtmsg(1,$errors);
 
         // 2. 创建新用户 保存相关信息
-        $user = $this->create($req->all());
-        if ($user->save()) {
-            
-        }
+        $user = new User();
+        $user->create(["name"=>$request->name,"email"=>$request->email,"password"=>$request->password]);
+        $token = JWTAuth::fromUser($user); 
+        return self::rtmsg(0,"注册成功",["token"=>$token]);
     }
 
     // 登录
