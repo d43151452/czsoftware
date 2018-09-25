@@ -23,10 +23,24 @@ class UserController extends Controller
         if($errors = User::validator($request->all()))
             return self::rtmsg(1,$errors);
 
+        // 验证码 邮箱  用户名 校验
+
+        if(!$cache = Cache::has("email:$request->email"))
+            return self::rtmsg(1,"请先获取验证码");
+
+        if($request->val_code != $cache["val_code"])
+            return self::rtmsg(1,"验证码错误");
+
+        if($request->name != $cache['data']["name"] || $request->email != $cache['data']["email"])
+            return self::rtmsg(1,"邮箱或用户名不符");
+
         // 2. 创建新用户 保存相关信息
         $user = new User();
         $user->create(["name"=>$request->name,"email"=>$request->email,"password"=>$request->password]);
         $token = JWTAuth::fromUser($user); 
+        // 删掉缓存
+        Cache::forget("email:$request->email");
+        // 返回注册成功消息
         return self::rtmsg(0,"注册成功",["token"=>$token]);
     }
 

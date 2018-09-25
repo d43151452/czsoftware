@@ -13,6 +13,15 @@ $api->version('v1', function ($api) {
     // 注册
     $api->post('register', 'App\Http\Controllers\UserController@register');
 
+    // 发送注册邮件
+    $api->post("email/send",'App\Http\Controllers\EmailController@send');
+
+    // 获取软件分类&软件排行
+    $api->post("currency",'App\Http\Controllers\SoftController@currency') ;
+
+    // 获取首页数据
+    $api->post("main",'App\Http\Controllers\SoftController@main') ;
+
     $api->group(['middleware' => 'api.auth'], function ($api) {
         // 需要登录才能进行操作的API写在这里
     });
