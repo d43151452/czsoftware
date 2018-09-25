@@ -112,7 +112,7 @@
                 <h1 class="aside-title">软件分类</h1>
                 <ul class="aside-sort">
                     <li v-for="(v,k) in sortList" :key="k">
-                        <a :href="'/sort/'+ v.sort_id">{{v.sort_name}}</a>
+                        <a :href="'/sort/'+ v.id">{{v.name}}</a>
                     </li>
                 </ul>
                 <h1 class="aside-title">热门软件下载榜</h1>
@@ -141,8 +141,8 @@
             return {
                 sortList:[
                     {
-                        sort_id:'123',
-                        sort_name:'123',
+                        id:'123',
+                        name:'123',
                     }
                 ],
                 hotList:[
@@ -178,10 +178,11 @@
                     ],
                     password:[
                         { required: true, message: '请输入密码', trigger: 'blur' },
+                        { min: 6, max: 32, message: '密码长度请在6-32位之间', trigger: 'blur' }
                     ],
                     name:[
                         { required: true, message: '请输入昵称', trigger: 'blur' },
-                        { max: 12, message: '昵称太长啦！', trigger: 'blur' },
+                        { min:6, max: 20, message: '用户名请在2-20位之间', trigger: 'blur' },
                     ],
                     val_code:[
                         { required: true, message: '请输入验证码', trigger: 'blur' },
@@ -200,7 +201,6 @@
             }
         },
         created(){
-
             axios.interceptors.response.use(
                 response => {
                     return response;
@@ -232,31 +232,13 @@
             if(auth){
                 this.token = auth;
             }
-            api.ajax_post('/sort',{})
+
+            //总分类列表
+            api.ajax_post('/currency',{})
             .then(res=>{
-                console.log(res);
                 if(res.data.errno == 0){
-                    this.sortList = res.data.data;
-                }else{
-                    this.$message({
-                        message: res.data.msg,
-                        type: 'error',
-                        center: true,
-                    });
-                }
-            }).catch(error=>{
-                this.sending = false;
-                this.$message({
-                    message: '可能出了点问题，请在后台查看，（╯-_-）╯╧╧',
-                    type: 'error',
-                    center: true,
-                });
-            });
-            api.ajax_post('/hotlist',{})
-            .then(res=>{
-                console.log(res);
-                if(res.data.errno == 0){
-                    this.hotList = res.data.data;
+                    this.sortList = res.data.data.sort_list;
+                    this.hotList = res.data.data.hot_list;
                 }else{
                     this.$message({
                         message: res.data.msg,
@@ -298,9 +280,9 @@
                     this.sending = true;
                     api.ajax_post('/email/send', {
                         'email': email,
-                        'name': name
+                        'name': name,
+                        'password': '123456'
                     }).then(res=>{
-                        console.log(res);
                         this.sending = false;
                         this.buttonStyle();
                         if(res.data.errno == 0){
@@ -410,7 +392,6 @@
                                     center: true,
                                 })
                             }
-                            console.log(res);
                         }).catch(error=>{
                             this.loginLoading = false;
                             this.$message({

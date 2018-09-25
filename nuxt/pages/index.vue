@@ -1,15 +1,23 @@
 <template>
-    <section class="container">
-        <div v-for="(v,k) in data" :key="k" class="module">
+    <section class="container main">
+        <el-carousel indicator-position="outside">
+            <el-carousel-item v-for="(v,k) in data.slideshow" :key="k">
+                <img :src="v.url" alt="">
+                <!-- <h3>{{k}}</h3> -->
+            </el-carousel-item>
+        </el-carousel>
+        <div v-for="(v,k) in data.sort_list" :key="k" class="module">
             <div class="module-title">
-                <span>{{v.name}}推荐</span>
+                <span>{{v.name}}最近更新</span>
             </div>
             <el-container class="module-container">
                 <el-main class="module-main">
                     <ul>
                         <li v-for="(vi,ki) in v.recommend_list" :key="ki">
-                            <img :src="vi.rec_cover" alt="">
-                            <p>{{vi.rec_name}}</p>
+                            <a :href="'/software/'+vi.rec_id">
+                                <img :src="vi.rec_cover" alt="">
+                                <p>{{vi.rec_name}}</p>
+                            </a>
                         </li>
                     </ul>
                 </el-main>
@@ -22,8 +30,10 @@
                     </div>
                     <ul class="aside-rank">
                         <li v-for="(vi,ki) in v.hot_list" :key="ki">
-                            <b>{{ki+1}}</b>
-                            {{vi.hot_name}}
+                            <a :href="'/software/'+vi.hot_id">
+                                <b>{{ki+1}}</b>
+                                {{vi.hot_name}}
+                            </a>
                         </li>
                     </ul>
                 </el-aside>
@@ -38,8 +48,8 @@ import api from '~/plugins/api';
 export default {
     data(){
         return {
-            data:[
-                {
+            data:{
+                sort_list: {
                     name:'',
                     recommend_list:[
                         {
@@ -51,9 +61,14 @@ export default {
                         {
                             hot_name:''
                         }
-                    ]
-                }
-            ]
+                    ],
+                },
+                slideshow:[
+                    {
+                        url:'',
+                    }
+                ],
+            }
         }
     },
     mounted(){
@@ -72,8 +87,11 @@ export default {
 </script>
 
 <style lang="less">
-    .module{
+    .main{
         padding: 20px;
+    }
+    .module{
+        padding: 20px 0;
 
         .module-title{
             font-size: 18px;
@@ -98,6 +116,7 @@ export default {
                     }
                     p{
                         font-size: 14px;
+                        color:#000;
                     }
                 }
             }
