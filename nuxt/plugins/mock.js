@@ -29,7 +29,7 @@ Mock.mock(/\/api\/currency.*/,'post',{
     'errno':'@integer(0,0)',
     'msg':'@csentence(5,10)',
     'data':{
-        'sort_list|20':[
+        'sort_list|19':[
             {
                 'id':'@integer(1,100)',
                 'name':'@cword(4)',
@@ -78,7 +78,9 @@ Mock.mock(/\/api\/main.*/,'post',{
         ],
         'slideshow|4':[
             {
-                'url':'@dataImage(1000x300)'
+                'cover':'@dataImage(1000x300)',
+                'url':'@url',
+                'desc':'@cword(20)'
             }
         ]
     }
@@ -90,9 +92,10 @@ Mock.mock(/\/api\/sort.*/,'post',{
     'errno':'@integer(0,0)',
     'msg':'@csentence(5,10)',
     'data':{
-        'sort_name':'@cword(4)',
+        'total':134,
         "list|10": [
             {
+                'id':'@integer(0,200)',
                 "name": "@cword(20)", 
                 "cover": "@dataImage(100x100)", 
                 "size": "20KB", 

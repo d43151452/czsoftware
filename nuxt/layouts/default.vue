@@ -111,8 +111,13 @@
             <el-aside class="main-aside" width="200px">
                 <h1 class="aside-title">软件分类</h1>
                 <ul class="aside-sort">
+                    <li>
+                        <el-badge value="new" class="item">
+                            <a :href="'/sort/今日更新'" style="color:red">今日更新</a>
+                        </el-badge>
+                    </li>
                     <li v-for="(v,k) in sortList" :key="k">
-                        <a :href="'/sort/'+ v.id">{{v.name}}</a>
+                        <a :href="'/sort/'+ v.name">{{v.name}}</a>
                     </li>
                 </ul>
                 <h1 class="aside-title">热门软件下载榜</h1>
@@ -141,8 +146,8 @@
             return {
                 sortList:[
                     {
-                        id:'123',
-                        name:'123',
+                        id:'',
+                        name:'',
                     }
                 ],
                 hotList:[
@@ -456,7 +461,7 @@
     } 
 
     .main{
-        height: 100vh;
+        // height: 100vh;
         .main-header{
             background-color:#409EFF;
             border-bottom: 1px solid #efefef;
@@ -507,7 +512,7 @@
             font-size: 22px;
         }
         .aside-sort{
-            padding: 10px 20px;
+            padding: 10px 10px;
             overflow: hidden;
             li{
                 height: 50px;

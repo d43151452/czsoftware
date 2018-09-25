@@ -1,9 +1,11 @@
 <template>
-    <section class="container main">
-        <el-carousel indicator-position="outside">
+    <section class="container index-main">
+        <el-carousel class="slideshow">
             <el-carousel-item v-for="(v,k) in data.slideshow" :key="k">
-                <img :src="v.url" alt="">
-                <!-- <h3>{{k}}</h3> -->
+                <a :href="v.url">
+                    <img :src="v.cover" alt="">
+                    <h1>{{v.desc}}</h1>
+                </a>
             </el-carousel-item>
         </el-carousel>
         <div v-for="(v,k) in data.sort_list" :key="k" class="module">
@@ -66,6 +68,8 @@ export default {
                 slideshow:[
                     {
                         url:'',
+                        target:'',
+                        desc:''
                     }
                 ],
             }
@@ -87,8 +91,18 @@ export default {
 </script>
 
 <style lang="less">
-    .main{
+    .index-main{
         padding: 20px;
+        .slideshow{
+            h1{
+                color:#eee;
+                position: relative;
+                font-size:14px;
+                top:-38px;
+                padding: 10px 20px;
+                background-color: rgba(0,0,0,0.5);
+            }
+        }
     }
     .module{
         padding: 20px 0;
