@@ -125,12 +125,22 @@ export default {
                     width: 18%;
                     margin-right: 2%; 
                     float: left;
+                    margin-bottom: 20px;
                     img{
                         width: 100%;
+                        border-radius: 25%;
+                        border: 2px solid #ccc;
                     }
                     p{
                         font-size: 14px;
                         color:#000;
+                        padding-left: 10px;
+                        padding-top: 10px;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        display:-webkit-box; 
+                        -webkit-box-orient:vertical;
+                        -webkit-line-clamp:1; 
                     }
                 }
             }

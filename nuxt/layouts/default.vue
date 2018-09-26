@@ -383,13 +383,14 @@
                         this.loginLoading = true;
                         api.ajax_post('/login', this.loginForm).then(res=>{
                             this.loginLoading = false;
-                            if(res.data.status_code == 0){
+                            if(res.data.errno == 0){
                                 this.$message({
                                     message: res.data.msg,
                                     type: 'success',
                                     center: true,
                                 });
                                 localStorage.setItem('token',res.data.data.token);
+                                this.mengban = false;
                             }else{
                                 this.$message({
                                     message: res.data.msg,
@@ -564,7 +565,8 @@
                     vertical-align: middle;
                     width: 40px;
                     height: 40px;
-                    border-radius: 50%;
+                    border-radius: 25%;
+                    border:1px solid #ccc;
                     margin-left: 5px;
                 }
 

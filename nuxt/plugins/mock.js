@@ -64,8 +64,8 @@ Mock.mock(/\/api\/main.*/,'post',{
                 'recommend_list|20':[
                     {
                         'rec_id':'@integer(1,200)',
-                        'rec_name':'@cword(4)',
-                        'rec_cover':'@dataImage(100x100)'
+                        'rec_name':'@cword(4,10)',
+                        'rec_cover':'@dataImage(200x200)'
                     }
                 ],
                 'hot_list|10':[
@@ -103,5 +103,42 @@ Mock.mock(/\/api\/sort.*/,'post',{
                 "description": "@cword(200)"
             }
         ], 
+    }
+});
+
+//详情页数据
+Mock.mock(/\/api\/software\/detail.*/,'post',{
+    'errno':'@integer(0,0)',
+    'msg':'@csentence(5,10)',
+    'data':{
+        'name':'@cword(4)',
+        'cover':'@dataImage(230x230)',
+        'manufactor':'@cword(4)',
+        'classification':'@cword(4)',
+        'comments':"@integer(500,600)",
+        'screenshot|5':[
+            '@dataImage(488x488)'
+        ],
+        'description':'@cparagraph(50,150)',
+        'update_log':'@cparagraph(50,150)',
+        'size':'20KB',
+        'platform':'@word(6)',
+        'language':'中文',
+        'dl_times':'@integer(100,200)',
+        'feature':'@csentence(10)',
+        'views':'@integer(100,200)',
+        'updated_at':"@datetime('yyyy-MM-dd HH:mm:ss')",
+        'fun_intro':'@cparagraph(50,150)',
+        'installation_steps':'@cparagraph(50,150)',
+        'q_a':'@cparagraph(50,150)',
+    }
+});
+
+//地址获取数据
+Mock.mock(/\/api\/software\/url.*/,'post',{
+    'errno':'@integer(0,0)',
+    'msg':'@csentence(5,10)',
+    'data':{
+        'url':'@url',
     }
 });

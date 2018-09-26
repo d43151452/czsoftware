@@ -116,6 +116,12 @@ export default {
 
             .img{
                 display: inline-block;
+                img{
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 25%;
+                    border:1px solid #ccc;
+                }
             }
 
             .content{
