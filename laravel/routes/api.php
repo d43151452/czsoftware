@@ -22,6 +22,9 @@ $api->version('v1', function ($api) {
     // 获取首页数据
     $api->post("main",'App\Http\Controllers\SoftController@main') ;
 
+    // 获取指定分类下的软件信息
+    $api->post("sort",'App\Http\Controllers\SoftController@sort') ;
+
     $api->group(['middleware' => 'api.auth'], function ($api) {
         // 需要登录才能进行操作的API写在这里
     });
