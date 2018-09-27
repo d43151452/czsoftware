@@ -142,3 +142,65 @@ Mock.mock(/\/api\/software\/url.*/,'post',{
         'url':'@url',
     }
 });
+
+//评论数据获取
+Mock.mock(/\/api\/software\/comments.*/,'post',{
+    'errno':'@integer(0,0)',
+    'msg':'@csentence(5,10)',
+    "data": {
+        "hot_list|3": [
+            {
+                'id':'',
+                "user_name": "@cname", 
+                "user_avatar": "@dataImage(100x100)", 
+                "created_at": "@datetime('yyyy-MM-dd HH:mm:ss')", 
+                "comment_content": "@cparagraph(10)", 
+                "zan": "@integer(300,500)", 
+                "cai": "@integer(0,20)",
+                'disabled':false,
+            }
+        ], 
+        "normal_comments": {
+            "total": 135, 
+            "list|10": [
+                {
+                    'id':'',
+                    "user_name": "@cname", 
+                    "user_avatar": "@dataImage(100x100)", 
+                    "created_at": "@datetime('yyyy-MM-dd HH:mm:ss')", 
+                    "comment_content": "@cparagraph(10)", 
+                    "zan": "@integer(0,50)", 
+                    "cai": "@integer(0,20)",
+                    'disabled':false,
+                }
+            ]
+        }
+    }
+});
+
+//地址获取数据
+Mock.mock(/\/api\/software\/comment\/z_c.*/,'post',{
+    'errno':'@integer(0,1)',
+    'msg':'@csentence(5,10)',
+});
+
+//非热评评论数据获取
+Mock.mock(/\/api\/software\/normal_comments.*/,'post',{
+    'errno':'@integer(0,0)',
+    'msg':'@csentence(5,10)',
+    "data": {
+        "total": 135, 
+        "list|10": [
+            {
+                'id':'',
+                "user_name": "@cname", 
+                "user_avatar": "@dataImage(100x100)", 
+                "created_at": "@datetime('yyyy-MM-dd HH:mm:ss')", 
+                "comment_content": "@cparagraph(10)", 
+                "zan": "@integer(0,50)", 
+                "cai": "@integer(0,20)",
+                'disabled':false,
+            }
+        ]
+    }
+});

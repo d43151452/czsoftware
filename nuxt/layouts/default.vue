@@ -437,6 +437,7 @@
         left: 0;
         right: 0;
         background-color: rgba(0,0,0,0.4);
+        z-index: 1000;
     }
     .login{
         position: absolute;
@@ -450,6 +451,7 @@
         background-color: #fff;
         padding: 20px 40px;
         border-radius: 20px;
+        z-index: 1001;
     }
 
     .mid-form{
