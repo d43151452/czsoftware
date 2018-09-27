@@ -20,8 +20,21 @@ Mock.mock(/\/api\/login.*/,'post',{
     'errno':'@integer(0,1)',
     'msg':'@csentence(5,10)',
     'data':{
-            'token':'@word(100)',
+        'token':'@word(100)',
+        "user": {
+            "id": "@integer(0,100)", 
+            "name": "@cname", 
+            "avatar": "@dataImage(100x100)", 
+            "dl_times": "@integer(0,100)", 
+            "type": "管理员"
         }
+    }
+});
+
+//退出
+Mock.mock(/\/api\/logout.*/,'post',{
+    'errno':'@integer(0,0)',
+    'msg':'@csentence(5,10)'
 });
 
 //分类
@@ -150,11 +163,11 @@ Mock.mock(/\/api\/software\/comments.*/,'post',{
     "data": {
         "hot_list|3": [
             {
-                'id':'',
+                'id':'@integer(0,1000)',
                 "user_name": "@cname", 
                 "user_avatar": "@dataImage(100x100)", 
                 "created_at": "@datetime('yyyy-MM-dd HH:mm:ss')", 
-                "comment_content": "@cparagraph(10)", 
+                "comment_content": "@cparagraph(3,8)", 
                 "zan": "@integer(300,500)", 
                 "cai": "@integer(0,20)",
                 'disabled':false,
@@ -164,11 +177,11 @@ Mock.mock(/\/api\/software\/comments.*/,'post',{
             "total": 135, 
             "list|10": [
                 {
-                    'id':'',
+                    'id':'@integer(0,1000)',
                     "user_name": "@cname", 
                     "user_avatar": "@dataImage(100x100)", 
                     "created_at": "@datetime('yyyy-MM-dd HH:mm:ss')", 
-                    "comment_content": "@cparagraph(10)", 
+                    "comment_content": "@cparagraph(3,8)", 
                     "zan": "@integer(0,50)", 
                     "cai": "@integer(0,20)",
                     'disabled':false,
@@ -192,11 +205,11 @@ Mock.mock(/\/api\/software\/normal_comments.*/,'post',{
         "total": 135, 
         "list|10": [
             {
-                'id':'',
+                'id':'@integer(0,1000)',
                 "user_name": "@cname", 
                 "user_avatar": "@dataImage(100x100)", 
                 "created_at": "@datetime('yyyy-MM-dd HH:mm:ss')", 
-                "comment_content": "@cparagraph(10)", 
+                "comment_content": "@cparagraph(3,8)", 
                 "zan": "@integer(0,50)", 
                 "cai": "@integer(0,20)",
                 'disabled':false,

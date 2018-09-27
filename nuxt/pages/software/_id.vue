@@ -165,10 +165,10 @@
                                 </span>
                                 <span class="right">
                                     <el-button size="mini" @click="z_c(v,1)" :disabled="v.disabled" type="primary" icon="el-icon-caret-top">
-                                        赞：{{v.zan}}
+                                        {{v.zan}}
                                     </el-button>
                                     <el-button size="mini" @click="z_c(v,0)" :disabled="v.disabled" type="primary" icon="el-icon-caret-bottom">
-                                        踩：{{v.cai}}
+                                        {{v.cai}}
                                     </el-button>
                                 </span>
                             </p>
@@ -200,10 +200,10 @@
                                 </span>
                                 <span class="right">
                                     <el-button size="mini" @click="z_c(v,1)" :disabled="v.disabled" type="primary" icon="el-icon-caret-top">
-                                        赞：{{v.zan}}
+                                        {{v.zan}}
                                     </el-button>
                                     <el-button size="mini" @click="z_c(v,0)" :disabled="v.disabled" type="primary" icon="el-icon-caret-bottom">
-                                        踩：{{v.cai}}
+                                        {{v.cai}}
                                     </el-button>
                                 </span>
                             </p>
@@ -366,6 +366,7 @@ export default {
                 .then(res=>{
                     this.comments_loading = false;
                     if(res.data.errno==0){
+                        this.comments_status = true;
                         this.comments = res.data.data;
                     }else{
                         this.$message({
@@ -476,9 +477,17 @@ export default {
                 'id':this.$route.params.id,
             })
             .then(res=>{
-                this.normal_comments_loading = false;
-                this.comments.normal_comments = res.data.data;
-                document.querySelector("#scrollPos").scrollIntoView(true);
+                if(res.data.errno==0){
+                    this.normal_comments_loading = false;
+                    this.comments.normal_comments = res.data.data;
+                    document.querySelector("#scrollPos").scrollIntoView(true);
+                }else{
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'error',
+                        center: true,
+                    });
+                }
             }).catch(err=>{
                 this.normal_comments_loading = false;
                 this.$message({
@@ -587,8 +596,8 @@ export default {
             display: flex;
             padding: 20px 0;
             img{
-                width: 100px;
-                height: 100px;
+                width: 70px;
+                height: 70px;
                 border-radius: 5px;
             }
             &-detail{

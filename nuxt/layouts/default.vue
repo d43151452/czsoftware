@@ -75,25 +75,36 @@
                     </a>
                 </p> 
                 <ul class="header-opration">
+                    <li class="header-opration-userinfo" v-if="token!=''">
+                        <a href="/user_center">
+                            <img :src="avatar" alt="">
+                            <span>
+                                {{user_name}}
+                            </span>
+                        </a>
+                    </li>
                     <li v-if="token!=''">
                         <el-dropdown>
                             <span style='color:white'>
                                 个人中心<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>
+                                <el-dropdown-item @click.native='user_center'>
                                     <i class="el-icon-info"></i>
                                     个人设置
                                 </el-dropdown-item>
-                                <el-dropdown-item>
+                                <el-dropdown-item v-if="this.type=='管理员'">
                                     <i class="el-icon-setting"></i>
                                     系统管理
                                 </el-dropdown-item>
-                                <el-dropdown-item>
-                                    <i class="el-icon-question"></i>
-                                    帮助文档
-                                </el-dropdown-item>
-                                <el-dropdown-item divided>
+                                <el-dropdown-item
+                                    @click.native='logout'
+                                    divided
+                                    v-loading.fullscreen.lock="logoutLoading"
+                                    element-loading-text="正在退出"
+                                    element-loading-spinner="el-icon-loading"
+                                    element-loading-background="rgba(0, 0, 0, 0.8)"
+                                >
                                     <i class="el-icon-error"></i>
                                     退出
                                 </el-dropdown-item>
@@ -131,7 +142,7 @@
                     </li>
                 </ul>
             </el-aside>
-            <nuxt :test="test"/>
+            <nuxt/>
         </el-container>
     </el-container>
 </template>
@@ -144,6 +155,7 @@
     export default {
         data(){
             return {
+                user:null,
                 sortList:[
                     {
                         id:'',
@@ -195,6 +207,7 @@
                     ],
                 },
                 loginLoading:false,
+                logoutLoading:false,
                 regLoading:false,
                 activeName: 'login',
                 mengban:false,
@@ -202,7 +215,11 @@
                 Countdown:60,
                 timer:null,
                 token:'',
-                test:'123'
+                user_name:'',
+                avatar:'',
+                type:'',
+                dl_times:'',
+
             }
         },
         created(){
@@ -216,8 +233,7 @@
                     if (error.response) {
                         switch (error.response.status) {
                             case 401:
-                                localStorage.removeItem('auth');
-                                localStorage.removeItem('user_name');
+                                this.removeToken();
                                 this.mengban = true;
                                 this.activeName = 'login';
                                 this.$message({
@@ -236,6 +252,10 @@
             let auth = localStorage.getItem('token');
             if(auth){
                 this.token = auth;
+                this.user_name = localStorage.getItem('user_name');
+                this.avatar = localStorage.getItem('avatar');
+                this.type = localStorage.getItem('type');
+                this.dl_times = localStorage.getItem('dl_times');
             }
 
             //总分类列表
@@ -265,6 +285,7 @@
             mbclose(){
                 this.mengban = false;
             },
+
             mbOpen(name){
                 this.mengban = true;
                 this.activeName = name;
@@ -320,6 +341,7 @@
                     return;
                 }
             },
+            //按钮样式封装
             buttonStyle(){
                 //设置按钮样式
                 let el = document.querySelector('#valCode');
@@ -342,6 +364,32 @@
                     }
                 },1000);
             },
+            //获得token处理方法封装
+            setToken(data){
+                localStorage.setItem('token',data.token);
+                localStorage.setItem('user_name',data.user.name);
+                localStorage.setItem('avatar',data.user.avatar);
+                localStorage.setItem('type',data.user.type);
+                localStorage.setItem('dl_times',data.user.dl_times);
+                this.token = data.token;
+                this.user_name = data.user.name;
+                this.avatar = data.user.avatar;
+                this.type = data.user.type;
+                this.dl_times = data.user.dl_times;
+            }, 
+            //失去token处理方法封装
+            removeToken(){
+                localStorage.removeItem('token');
+                localStorage.removeItem('user_name');
+                localStorage.removeItem('avatar');
+                localStorage.removeItem('type');
+                localStorage.removeItem('dl_times');
+                this.token='';
+                this.user_name='';
+                this.avatar='';
+                this.type='';
+                this.dl_times='';
+            },      
             //注册提交
             register(form_name){
                 this.$refs[form_name].validate((valid) => {
@@ -355,7 +403,7 @@
                                     type: 'success',
                                     center: true,
                                 });
-                                localStorage.setItem('token',res.data.data.token);
+                                this.setToken(res.data.data);
                             }else{
                                 this.$message({
                                     message:res.data.msg,
@@ -389,7 +437,7 @@
                                     type: 'success',
                                     center: true,
                                 });
-                                localStorage.setItem('token',res.data.data.token);
+                                this.setToken(res.data.data);
                                 this.mengban = false;
                             }else{
                                 this.$message({
@@ -412,6 +460,39 @@
                 });
                 
             },
+            //退出
+            logout(){
+                this.logoutLoading = true;
+                api.ajax_post('/logout', this.loginForm)
+                .then(res=>{
+                    this.logoutLoading = false;
+                    if(res.data.errno == 0){
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'success',
+                            center: true,
+                        });
+                        this.removeToken();
+                        this.mengban = false;
+                    }else{
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'error',
+                            center: true,
+                        })
+                    }
+                }).catch(error=>{
+                    this.logoutLoading = false;
+                    this.$message({
+                        message: '可能出了点问题，问题请在后台查看',
+                        type: 'error',
+                        center: true,
+                    });
+                });
+            },
+            user_center(){
+                location.href="/user_center";
+            }
         }
     }
 </script>
@@ -489,6 +570,17 @@
                 float: right;
                 padding-right: 30px;
 
+                .header-opration-userinfo{
+                    img{
+                        width: 40px;
+                        height: 40px;
+                        vertical-align: middle;
+                    }
+                    span{
+                        margin-left: 10px;
+                        color: #fff;
+                    }
+                }
                 li{
                     color: #fff;
                     display: inline-block;
